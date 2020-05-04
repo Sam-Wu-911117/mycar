@@ -18,17 +18,15 @@ void setup() {
   bluetooth.begin(9600);
   bluetooth.setTimeout(100);
   Serial.println("Bluetooth ready");
-  
+  /////////
 }
   
 void loop() {
   int command = GetCommand();
   ExecCommand(command);
-
 }
 int GetCommand() {
   int command = bluetooth.parseInt();
-  
   return command;
 }
 

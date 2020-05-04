@@ -18,7 +18,6 @@ void setup() {
   bluetooth.begin(9600);
   bluetooth.setTimeout(100);
   Serial.println("Bluetooth ready");
-  /////////
 }
   
 void loop() {

@@ -1,10 +1,13 @@
 #include <AFMotor.h>
 #include <SoftwareSerial.h>
+#include <Servo.h>
+
 AF_DCMotor motorL(3);
 AF_DCMotor motorR(4);
 const int rxpin = A0; // 接收 pin
 const int txpin = A1; // 發送 pin
 SoftwareSerial bluetooth(rxpin, txpin);
+Servo frontservo;
 
 void setup() {
   motorL.setSpeed(200);
@@ -18,6 +21,8 @@ void setup() {
   bluetooth.begin(9600);
   bluetooth.setTimeout(100);
   Serial.println("Bluetooth ready");
+
+  frontservo.attach(10);
 }
   
 void loop() {
@@ -46,5 +51,14 @@ void ExecCommand(int command){
     motorR.run(BACKWARD);
     Serial.println("backward");
   }
-
+  else if(command==4) {
+    frontservo.write();
+    delay(1000);
+    Serial.println("left");
+  }
+  else if(command==5) {
+    frontservo.write();
+    delay(1000);
+    Serial.println("right");
+  }
 }

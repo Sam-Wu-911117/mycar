@@ -24,6 +24,10 @@ void setup() {
   Serial.println("Bluetooth ready");
 
   frontservo.attach(10);
+  pinMode(A2,OUTPUT);
+  analogWrite(A2,0);
+  pinMode(A3,OUTPUT);
+  analogWrite(A3,0);
 }
   
 void loop() {
@@ -42,16 +46,26 @@ void ExecCommand(int command){
     motorL.run(RELEASE);
     motorR.run(RELEASE);
     Serial.println("stop");
+    analogWrite(A2,255);
+    analogWrite(A3,255);
   }
   else if(command==2) {
     motorL.run(FORWARD);
     motorR.run(FORWARD);
     Serial.println("forward");
+    analogWrite(A2,0);
+    analogWrite(A3,0);
   }
   else if(command==3) {
     motorL.run(BACKWARD);
     motorR.run(BACKWARD);
     Serial.println("backward");
+    analogWrite(A2,0);
+    analogWrite(A3,0);
+    delay(500);
+    analogWrite(A2,255);
+    analogWrite(A3,255);
+    delay(500);
   }
   else if (command==4){
     int angle = bluetooth.parseInt();

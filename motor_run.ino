@@ -8,7 +8,8 @@ const int rxpin = A0; // 接收 pin
 const int txpin = A1; // 發送 pin
 SoftwareSerial bluetooth(rxpin, txpin);
 Servo frontservo;
-
+int angle = 0;
+  
 void setup() {
   motorL.setSpeed(200);
   motorL.run(RELEASE);
@@ -26,9 +27,10 @@ void setup() {
 }
   
 void loop() {
-  int command = GetCommand();
+  int command = GetCommand();  
   ExecCommand(command);
 }
+
 int GetCommand() {
   int command = bluetooth.parseInt();
   return command;
@@ -51,14 +53,14 @@ void ExecCommand(int command){
     motorR.run(BACKWARD);
     Serial.println("backward");
   }
-  else if(command==4) {
-    frontservo.write();
-    delay(1000);
-    Serial.println("left");
-  }
-  else if(command==5) {
-    frontservo.write();
-    delay(1000);
-    Serial.println("right");
-  }
+  else if (command==4){
+    int angle = bluetooth.parseInt();
+    Serial.println(angle); 
+    frontservo.write(angle);
+    }
 }
+
+  
+    
+    
+        

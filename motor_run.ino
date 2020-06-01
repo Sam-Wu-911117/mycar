@@ -9,6 +9,7 @@ const int txpin = A1; // 發送 pin
 SoftwareSerial bluetooth(rxpin, txpin);
 Servo frontservo;
 int angle = 0;
+bool isFlashing = false;
   
 void setup() {
   motor.setSpeed(200);
@@ -23,9 +24,9 @@ void setup() {
 
   frontservo.attach(10);
   pinMode(A2,OUTPUT);
-  analogWrite(A2,0);
+  digitalWrite(A2,LOW);
   pinMode(A3,OUTPUT);
-  analogWrite(A3,0);
+  digitalWrite(A3,LOW);
 }
   
 void loop() {
@@ -42,37 +43,44 @@ void ExecCommand(int command){
 
   if(command==1) {
     motor.run(RELEASE);
-   
     Serial.println("stop");
     analogWrite(A2,255);
     analogWrite(A3,255);
+    isFlashing = false;
   }
   else if(command==2) {
     motor.run(FORWARD);
-   
     Serial.println("forward");
     analogWrite(A2,0);
     analogWrite(A3,0);
+    isFlashing = false;
   }
   else if(command==3) {
     motor.run(BACKWARD);
-    
+    isFlashing = true;
     Serial.println("backward");
-    analogWrite(A2,0);
-    analogWrite(A3,0);
-    delay(500);
-    analogWrite(A2,255);
-    analogWrite(A3,255);
-    delay(500);
   }
   else if (command==4){
     int angle = bluetooth.parseInt();
     Serial.println(angle); 
     frontservo.write(angle);
-    }
+    isFlashing = false;
+   }
+  if(isFlashing) {
+      flash(); 
+  }
+ 
 }
 
-  
-    
-    
-        
+void flash(){
+
+  static bool LedStatus = LOW;
+  static unsigned long lasttime = 0;
+  unsigned long thistime = millis(); 
+    if(thistime-lasttime>500){
+      LedStatus = !LedStatus;
+      digitalWrite(A2, LedStatus);
+      digitalWrite(A3, LedStatus); 
+      lasttime = thistime;
+    }
+}         

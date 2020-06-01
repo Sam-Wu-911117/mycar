@@ -2,8 +2,8 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
-AF_DCMotor motorL(3);
-AF_DCMotor motorR(4);
+AF_DCMotor motor(3);
+
 const int rxpin = A0; // 接收 pin
 const int txpin = A1; // 發送 pin
 SoftwareSerial bluetooth(rxpin, txpin);
@@ -11,11 +11,9 @@ Servo frontservo;
 int angle = 0;
   
 void setup() {
-  motorL.setSpeed(200);
-  motorL.run(RELEASE);
-  motorR.setSpeed(200);
-  motorR.run(RELEASE);
-
+  motor.setSpeed(200);
+  motor.run(RELEASE);
+  
   Serial.begin(9600);
   Serial.setTimeout(100);
   Serial.println("Serial ready");
@@ -43,22 +41,22 @@ int GetCommand() {
 void ExecCommand(int command){
 
   if(command==1) {
-    motorL.run(RELEASE);
-    motorR.run(RELEASE);
+    motor.run(RELEASE);
+   
     Serial.println("stop");
     analogWrite(A2,255);
     analogWrite(A3,255);
   }
   else if(command==2) {
-    motorL.run(FORWARD);
-    motorR.run(FORWARD);
+    motor.run(FORWARD);
+   
     Serial.println("forward");
     analogWrite(A2,0);
     analogWrite(A3,0);
   }
   else if(command==3) {
-    motorL.run(BACKWARD);
-    motorR.run(BACKWARD);
+    motor.run(BACKWARD);
+    
     Serial.println("backward");
     analogWrite(A2,0);
     analogWrite(A3,0);
